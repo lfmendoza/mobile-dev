@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gridLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnCount="3"
+    android:rowCount="3"
+    android:layout_margin="16dp"
+    android:layout_span="@integer/material_motion_duration_long_1"
+    android:background="@color/purple_200">
+    <TextView
+        android:id="@+id/textViewCurrentTurn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:text="Current turn:"
+        android:textSize="21sp"/>
+</GridLayout>

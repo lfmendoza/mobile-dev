@@ -1,0 +1,57 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/editTextPlayerName1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your player 1 name"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/editTextPlayerName2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your player 2 name"
+        android:inputType="textPersonName" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupBoardSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radioButton3x3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="3x3" />
+
+        <RadioButton
+            android:id="@+id/radioButton4x4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4x4" />
+
+        <RadioButton
+            android:id="@+id/radioButton5x5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5x5" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/buttonStartGame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start Game" />
+
+</LinearLayout>
