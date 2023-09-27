@@ -1,7 +1,3 @@
-package com.example.laboratorio4
-
-import WelcomeActivity
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,14 +11,15 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONException
 import org.json.JSONObject
+import com.example.laboratorio4.R
 
 class LoginActivity : AppCompatActivity() {
+
     private lateinit var usernameEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var loginButton: Button
     private lateinit var requestQueue: RequestQueue
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -41,7 +38,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun login(username: String, password: String) {
-        val url = "http://127.0.0.1/php-prueba/public/authenticate.php"
+        val url = "http://10.0.2.2/php-prueba/public/authenticate.php"
         val params = HashMap<String, String>()
         params["username"] = username
         params["password"] = password
@@ -54,6 +51,13 @@ class LoginActivity : AppCompatActivity() {
                 try {
                     val success = response.getBoolean("success")
                     if (success) {
+                        val jwt = response.getString("jwt")
+
+                        val sharedPreferences = getSharedPreferences("MyPreferences", MODE_PRIVATE)
+                        val editor = sharedPreferences.edit()
+                        editor.putString("jwt", jwt)
+                        editor.apply()
+
                         val intent = Intent(this, WelcomeActivity::class.java)
                         startActivity(intent)
                     } else {

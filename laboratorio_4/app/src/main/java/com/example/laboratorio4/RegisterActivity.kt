@@ -43,7 +43,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun register(username: String, password: String, name: String) {
-        val url = "http://127.0.0.1/php-prueba/public/register.php"
+        val url = "http://10.0.2.2/php-prueba/public/register.php"
         val params = HashMap<String, String>()
         params["username"] = username
         params["password"] = password
