@@ -1,46 +1,81 @@
-package com.example.laboratorio_5
+package com.example.laboratorio_5;
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.laboratorio_5.ui.theme.Laboratorio_5Theme
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.json.JSONArray
+import okhttp3.*
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            Laboratorio_5Theme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
+        setContentView(R.layout.activity_main)
+
+        getPokemonNames()
+        // getPokeathlonSpeedStats()
+    }
+
+    private fun getPokemonNames() {
+        GlobalScope.launch(Dispatchers.Main) {
+            try {
+                val pokemonNames = fetchPokemonNames()
+                Log.d("MainActivity", "Pokemon Names: $pokemonNames")
+            } catch (e: Exception) {
+
+                Log.e("MainActivity", "Error getting Pokemon names: ${e.message}")
             }
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+    private suspend fun fetchPokemonNames(): List<String> {
+        return withContext(Dispatchers.IO) {
+            val url = "https://pokeapi.co/api/v2/pokemon/"
+            val response = OkHttpClient().newCall(Request.Builder().url(url).build()).execute()
+            val jsonResponse = response.body?.string() ?: ""
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Laboratorio_5Theme {
-        Greeting("Android")
+            val names = mutableListOf<String>()
+            val jsonArray = JSONArray(jsonResponse)
+            for (i in 0 until jsonArray.length()) {
+                val pokemonObject = jsonArray.getJSONObject(i)
+                val pokemonName = pokemonObject.getString("name")
+                names.add(pokemonName)
+            }
+
+            return@withContext names
+        }
+    }
+
+    private fun getPokeathlonSpeedStats() {
+        GlobalScope.launch(Dispatchers.Main) {
+            try {
+                val speedStats = fetchPokeathlonSpeedStats()
+                Log.d("MainActivity", "Speed Stats: $speedStats")
+            } catch (e: Exception) {
+                Log.e("MainActivity", "Error getting speed stats: ${e.message}")
+            }
+        }
+    }
+
+    private suspend fun fetchPokeathlonSpeedStats(): List<String> {
+        return withContext(Dispatchers.IO) {
+            val url = "https://pokeapi.co/api/v2/pokeathlon-stat/speed"
+            val response = OkHttpClient().newCall(Request.Builder().url(url).build()).execute()
+            val jsonResponse = response.body?.string() ?: ""
+
+            val stats = mutableListOf<String>()
+            val jsonArray = JSONArray(jsonResponse)
+            for (i in 0 until jsonArray.length()) {
+                val statObject = jsonArray.getJSONObject(i)
+                val statName = statObject.getString("name")
+                stats.add(statName)
+            }
+
+            return@withContext stats
+        }
     }
 }
